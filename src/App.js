@@ -49,6 +49,7 @@ export default class App extends Component {
             {/*É aqui que colocamos a rota dashboard  que so aparece com um login seguro */}
             <SecuredRoute path="/dashboard" component={Dashboard} />
             <SecuredRoute path="/profile" component={Profile} />
+            <Route path ="/" component={Login} />
             <Route path ="/login/:notify?" component={Login} />
             <Route path="/password/reset/:token" component={Passwordreset} />
             <Route path="/password/forgot" component={Passwordforgot} />
