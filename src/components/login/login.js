@@ -82,6 +82,7 @@ class Login extends Component {
             value={values.username}
             className="form-control"
             placeholder="Username"
+            autoComplete="Nome do User"
              // eslint-disable-next-line react/jsx-no-duplicate-props
             className={
               errors.username && touched.username
@@ -108,6 +109,7 @@ class Login extends Component {
             value={values.password}
             className="form-control"
             placeholder="Password"
+            autoComplete="Password min 8"
              // eslint-disable-next-line react/jsx-no-duplicate-props
             className={
               errors.password && touched.password

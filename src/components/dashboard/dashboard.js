@@ -934,9 +934,9 @@ class Dashboard extends Component {
                 {/* <li className="breadcrumb-item"><a href="#">Home</a></li> */}
                             
                   {/* eslint-disable-next-line*/}                              
-                  <li className="breadcrumb-item"> <a href="#" onClick={() => this.Logout()} className="dropdown-item">
+                  <li className="breadcrumb-item"> <button  onClick={() => this.Logout()} className="dropdown-item">
                                                       <i className="fas fa-sign-out-alt mr-2" /> Logout
-                                                    </a>
+                                                    </button>
                                                     </li>                                   
               </ol>
             </div>{/* /.col */}

@@ -74,6 +74,7 @@ class Register extends Component {
           value={values.username}
           className="form-control"
           placeholder="Username"
+          autoComplete="Nome do User"
           // eslint-disable-next-line react/jsx-no-duplicate-props
           className={
               errors.username && touched.username
@@ -120,6 +121,8 @@ class Register extends Component {
         <input
           type="password"
           name="password"
+          placeholder="Password"
+          autoComplete="Password min 8"
           onChange={handleChange}
           value={values.password}
           className="form-control"
@@ -129,7 +132,7 @@ class Register extends Component {
                 ? "form-control is-invalid"
                 : "form-control"
             }
-            placeholder="Password"
+            
         />
           <div className="input-group-append">
             <div className="input-group-text">
@@ -146,13 +149,15 @@ class Register extends Component {
         <input
           type="password"
           name="confirm_password"
+          placeholder="Confirm Password"
+          autoComplete="Password min 8"
           onChange={handleChange}
           className={
               errors.confirm_password && touched.confirm_password
                 ? "form-control is-invalid"
                 : "form-control"
             }
-          placeholder="Confirm Password"
+          
         />
           <div className="input-group-append">
             <div className="input-group-text">

@@ -1,5 +1,5 @@
-import React, { Component} from "react";
-import { Formik, Form } from "formik";
+import React, { Component } from "react";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
@@ -15,19 +15,21 @@ class Passwordforgot extends Component {
     super(props);
 
     this.state = {
+      response: {},
       error_message: null,
+      avatar: ""
     };
   }
 
   submitForm = async formData => {
     await axios
-      .post(process.env.REACT_APP_API_URL +"password/reset", formData)
+      .post("http://localhost:8080/password/reset", formData)
       .then(res => {
         console.log(res.data.result);
         if (res.data.result === "success") {
-          swal("Success!", res.data.message, "success")
-          .then(value => {
-            window.location.replace("/login");});
+          swal("Success!", res.data.message, "success").then(value => {
+            //s window.location.reload();
+          });
         } else if (res.data.result === "error") {
           swal("Error!", res.data.message, "error");
         }
@@ -48,8 +50,8 @@ class Passwordforgot extends Component {
     setFieldValue
   }) => {
     return (
-
-      <Form role="form" onSubmit={handleSubmit}>
+      // eslint-disable-next-line
+      <form role="form" onSubmit={handleSubmit}>
         <div className="card-body">
           <div className="form-group  has-feedback">
             <label htmlFor="email">Email address</label>
@@ -66,33 +68,36 @@ class Passwordforgot extends Component {
               placeholder="Enter email"
             />
             {errors.email && touched.email ? (
-              <small id="passwordHelp" class="text-danger">
+              <small id="passwordHelp" className="text-danger">
                 {errors.email}
               </small>
             ) : null}
           </div>
         </div>
-      
-        <div class="row">
-          <div class="col-12">
+        {/* /.card-body */}
+        <div className="row">
+          <div className="col-12">
             <button
               type="submit"
               disable={isSubmitting}
-              class="btn btn-primary btn-block"
+              className="btn btn-primary btn-block"
             >
               Request new password
             </button>
           </div>
         </div>
-      </Form>
+      </form>
     );
   };
 
   render() {
+    // eslint-disable-next-line
+    let result = this.state.response;
     return (
       <div className="login-page">
         <div className="login-box">
           <div className="login-logo">
+         
             <a href="../../../public/AdminLTE/index.html">
               <b>Basic</b>POS
             </a>
@@ -117,10 +122,13 @@ class Passwordforgot extends Component {
                 {/* {this.showForm()}            */}
                 {props => this.showForm(props)}
               </Formik>
-              <Link to="/login">Login</Link>
-              <p className="mb-0">
-                <Link to="/register">Register a new membership</Link>
-              </p>
+                <p className="mb-0">
+                  <Link to="/login">Login</Link>
+                </p>
+
+                <p className="mb-0">
+                  <Link to="/register">Register a new membership</Link>
+                </p>
             </div>
             {/* /.login-card-body */}
           </div>
