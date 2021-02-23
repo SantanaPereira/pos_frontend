@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import Recaptcha from "react-recaptcha";
 
 
 
@@ -32,6 +33,19 @@ class Register extends Component {
       alert: null
     };
   }
+
+  initilizeRecaptcha = async => {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
+
+  componentDidMount() {
+    this.initilizeRecaptcha();
+}
 
   submitForm = (values, history) => {
     axios
@@ -170,6 +184,23 @@ class Register extends Component {
             </small>
           ) : null}
       </div>
+
+                      <div className="form-group">
+                          <label>Recaptcha Validation</label>
+                          <Recaptcha
+                            sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+                            render="explicit"
+                            theme="light"
+                            verifyCallback={(response) => {
+                              setFieldValue("recaptcha", response);
+                            }}
+                            onloadCallback={() => {
+                              console.log("done loading!");
+                            }}
+                          />
+                          {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
+                        </div>
+
       <div className="row">
         <div className="col-md-12">
           <button

@@ -4,6 +4,10 @@ import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import Recaptcha from "react-recaptcha";
+
+
+
 const PasswordForgotSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
@@ -20,12 +24,26 @@ class Passwordforgot extends Component {
       avatar: ""
     };
   }
+  
+  initilizeRecaptcha = async => {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
+
+  componentDidMount() {
+    this.initilizeRecaptcha();
+}
+
 
   submitForm = async formData => {
     await axios
-      .post("http://localhost:8080/password/reset", formData)
+      .post(process.env.REACT_APP_API_URL +"password/reset", formData)
       .then(res => {
-        console.log(res.data.result);
+        console.log("Password Forgot-->"+res.data.result);
         if (res.data.result === "success") {
           swal("Success!", res.data.message, "success").then(value => {
             //s window.location.reload();
@@ -74,6 +92,23 @@ class Passwordforgot extends Component {
             ) : null}
           </div>
         </div>
+
+        <div className="form-group">
+          <label>Recaptcha Validation</label>
+          <Recaptcha
+            sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+            render="explicit"
+            theme="light"
+            verifyCallback={(response) => {
+              setFieldValue("recaptcha", response);
+            }}
+            onloadCallback={() => {
+              console.log("done loading!");
+            }}
+          />
+          {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
+        </div>
+
         {/* /.card-body */}
         <div className="row">
           <div className="col-12">

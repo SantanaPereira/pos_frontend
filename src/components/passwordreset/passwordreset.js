@@ -28,11 +28,13 @@ class Passwordreset extends Component {
 
   submitForm = async (values, history, token) => {
     await axios
-      .put(process.env.REACT_APP_API_URL +"password/reset?token=" + token, values)
+      .put(process.env.REACT_APP_API_URL +"password/reset?token="+token, values)
       .then(res => {
+        console.log("Password RESET-->"+res.data.result);
         if (res.data.result === "success") {
           swal("Success!", res.data.message, "success").then(value => {
-            window.location.replace("/login");
+            // window.location.replace("/login");
+            history.push("/login");
           });
         } else if (res.data.result === "error") {
           swal("Error!", res.data.message, "error");
@@ -55,7 +57,8 @@ class Passwordreset extends Component {
     setFieldValue
   }) => {
     return (
-      <form onSubmit={handleSubmit}>
+      // eslint-disable-next-line jsx-a11y/no-redundant-roles
+      <form role="form" onSubmit={handleSubmit}>
         <div className="card-body">
           <div className="form-group input-group has-feedback">
             <label htmlFor="password">Password:</label>

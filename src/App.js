@@ -41,22 +41,24 @@ export default class App extends Component {
     return (
       <Router>
        {/* Se estiver logado mostra o Header e o Sidebar*/}
+       <Switch>
           <div>
-          {isLoggedIn() && <Header />}
+            {isLoggedIn() && <Header />}
             {isLoggedIn() && <Sidebar />}
-            <Switch>
-            <Route path ="/" exact component={Login} />
-            <Route path ="/login/:notify?" exact component={Login} />
-            <Route path="/password/reset/:token" exact component={Passwordreset} />
-            <Route path="/password/forgot" exact component={Passwordforgot} />
             <Route path="/register" component={Register} />
+            <Route path ="/" exact component={Login} />
+            <Route path ="/login/:notify?"  component={Login} />
+            <Route path="/password/forgot" component={Passwordforgot} />
+            <Route path="/password/reset/:token" component={Passwordreset} />
+           
             {/*É aqui que colocamos a rota dashboard  que so aparece com um login seguro */}
-            <SecuredRoute  path="/dashboard" exact component={Dashboard} />
-            <SecuredRoute  path="/profile" exact component={Profile} />
-          
-            </Switch>
+            <SecuredRoute  path="/dashboard"  component={Dashboard} />
+            <SecuredRoute  path="/profile" component={Profile} />
+         
             {isLoggedIn() && <Footer />}
           </div>
+           
+          </Switch>
       
       </Router>
     );

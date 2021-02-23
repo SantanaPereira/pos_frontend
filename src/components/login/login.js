@@ -4,13 +4,15 @@ import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import Recaptcha from "react-recaptcha";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "username is Too Short!")
     .max(50, "username is Too Long!")
     .required("Username is Required"),
-  password: Yup.string().required("Password is required")
+    recaptcha: Yup.string().required(),
+    password: Yup.string().required("Password is required")
 });
 
 
@@ -23,9 +25,20 @@ class Login extends Component {
       alert: null
     };
   }
-  
+
+  initilizeRecaptcha = async => {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
   
   componentDidMount() {
+
+    this.initilizeRecaptcha();
+
     if (localStorage.getItem("TOKEN_KEY") != null) {
         return this.props.history.goBack();
      }
@@ -69,8 +82,9 @@ class Login extends Component {
     touched,
     handleChange,
     handleSubmit,
-    setFieldValue,
-    isSubmitting
+    onSubmit,
+    isSubmitting,
+    setFieldValue
   }) => {
     return (
       <form onSubmit={handleSubmit}>
@@ -128,6 +142,21 @@ class Login extends Component {
             </small>
           ) : null}
         </div>
+                  <div className="form-group">
+                    <label>Recaptcha Validation</label>
+                    <Recaptcha
+                      sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+                      render="explicit"
+                      theme="light"
+                      verifyCallback={(response) => {
+                        setFieldValue("recaptcha", response);
+                      }}
+                      onloadCallback={() => {
+                        console.log("done loading!");
+                      }}
+                    />
+                    {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
+                  </div>
         <div className="row">
           <div className="col-8">
             <div className="icheck-primary">
