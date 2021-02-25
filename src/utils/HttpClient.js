@@ -23,7 +23,7 @@ axios.interceptors.response.use(
   },
   async (error) => {
     // debugger;
-    if (error.response.status == "401") {
+    if (error.response.status === "401") {
       const refreshToken = localStorage.getItem(server.REFRESH_TOKEN_KEY);
       const refreshUrl = `${process.env.REACT_APP_API_URL}/${server.REFRESH_TOKEN_URL}`;
       let result = await axios.post(refreshUrl, { refreshToken });
@@ -32,7 +32,8 @@ axios.interceptors.response.use(
       localStorage.setItem(server.TOKEN_KEY, token);
       // debugger;
       return axios.request(error.config);
-    } else if (error.response.status == "403") {
+    } else if (error.response.status === "403") {
+        
       // force logout
       localStorage.removeItem(server.TOKEN_KEY);
       localStorage.removeItem(server.REFRESH_TOKEN_KEY);

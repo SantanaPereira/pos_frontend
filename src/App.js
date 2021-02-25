@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Header from "./components/header";
 import Sidebar from "./components/sidebar";
 import Footer from "./components/footer";
@@ -10,41 +10,37 @@ import Passwordreset from "./components/passwordreset";
 import Passwordforgot from "./components/passwordforgot";
 //eslint-disable-next-line
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
-
-// Verificar se está liged IN
-const isLoggedIn = () => {
-  return localStorage.getItem('TOKEN_KEY') !== null;
-};
-
-//Rota segura -- Secure Route
-const SecuredRoute = ({ component: Component, ...rest }) => (                        
-  <Route
-    {...rest}
-    render={props =>
-      isLoggedIn() === true ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+import * as loginActions from "./actions/login.action";
+//eslint-disable-next-line
+import { useDispatch, useSelector } from "react-redux";
 
 
-export default class App extends Component {
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
-    console.log("update");
-  }
 
-  render() {
-    
+const App =(props)=> {
+ 
+  useSelector(({ loginReducer }) => loginReducer);
+
+  //Rota segura -- Secure Route
+    const SecuredRoute = ({ component: Component, ...rest }) => (                        
+      <Route
+        {...rest}
+        render={props =>
+          loginActions.isLoggedIn() === true ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
+      />
+    );
+
     return (
       <Router>
-       {/* Se estiver logado mostra o Header e o Sidebar*/}
+       {/* Se estiver logado - isLoggedIn=true - mostra o Header e o Sidebar*/}
        <Switch>
           <div>
-            {isLoggedIn() && <Header />}
-            {isLoggedIn() && <Sidebar />}
+            {loginActions.isLoggedIn() && <Header />}
+            {loginActions.isLoggedIn() && <Sidebar />}
             <Route path="/register" component={Register} />
             <Route path ="/" exact component={Login} />
             <Route path ="/login/:notify?"  component={Login} />
@@ -54,15 +50,21 @@ export default class App extends Component {
             {/*É aqui que colocamos a rota dashboard  que so aparece com um login seguro */}
             <SecuredRoute  path="/dashboard"  component={Dashboard} />
             <SecuredRoute  path="/profile" component={Profile} />
+
+
+
+
          
-            {isLoggedIn() && <Footer />}
+            {loginActions.isLoggedIn()  && <Footer />}
           </div>
            
           </Switch>
       
       </Router>
     );
-  }
+  
 }
+
+export default App;
 
 
