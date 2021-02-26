@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
-
+import { server } from "../../constants";
+// import { BrowserRouter as  Redirect } from "react-router-dom";
 
 
 class Dashboard extends Component {
@@ -21,8 +22,10 @@ class Dashboard extends Component {
       switch (value) {
         case "sure":
           swal(" SignOut Successfully", "success").then(val => {
-            localStorage.removeItem("TOKEN_KEY");
+            // localStorage.removeItem("TOKEN_KEY");
+            localStorage.removeItem(server.TOKEN_KEY);
             return this.props.history.push("/login");
+            // <Redirect to="/login" />
           });
           break;
         case "nope":

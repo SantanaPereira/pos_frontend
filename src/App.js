@@ -16,12 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 
-const App =(props)=> {
- 
+const App  = ()=> {
+
   useSelector(({ loginReducer }) => loginReducer);
 
   //Rota segura -- Secure Route
-    const SecuredRoute = ({ component: Component, ...rest }) => (                        
+    const SecuredRoute = ({ component: Component, ...rest }) => (      
+           
       <Route
         {...rest}
         render={props =>
@@ -32,12 +33,15 @@ const App =(props)=> {
           )
         }
       />
+    
     );
 
     return (
+    
       <Router>
        {/* Se estiver logado - isLoggedIn=true - mostra o Header e o Sidebar*/}
        <Switch>
+       <React.Fragment>
           <div>
             {loginActions.isLoggedIn() && <Header />}
             {loginActions.isLoggedIn() && <Sidebar />}
@@ -51,18 +55,16 @@ const App =(props)=> {
             <SecuredRoute  path="/dashboard"  component={Dashboard} />
             <SecuredRoute  path="/profile" component={Profile} />
 
-
-
-
          
             {loginActions.isLoggedIn()  && <Footer />}
           </div>
-           
+          </React.Fragment>
           </Switch>
       
       </Router>
+    
     );
-  
+
 }
 
 export default App;

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as loginActions from "../../actions/login.action";
 import { server } from "../../constants";
+
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "username is Too Short!")
@@ -18,6 +19,7 @@ const LoginSchema = Yup.object().shape({
 
 const Login = (props) => {
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);
 
   const initilizeRecaptcha = async () => {
@@ -31,6 +33,7 @@ const Login = (props) => {
   useEffect(() => {
     initilizeRecaptcha();
     if (localStorage.getItem(server.TOKEN_KEY) != null) {
+      console.log("Isto é no login.js  = "+localStorage.getItem(server.TOKEN_KEY));
       return props.history.push("/dashboard");
     }
     let notify = props.match.params["notify"];
@@ -64,6 +67,7 @@ const Login = (props) => {
             value={values.username}
             className="form-control"
             placeholder="Username"
+            autoComplete="username"
            
             // eslint-disable-next-line react/jsx-no-duplicate-props
             className={
@@ -72,13 +76,13 @@ const Login = (props) => {
                 : "form-control"
             }
           />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+          <div className="input-group-append">
+            <div className="input-group-text">
+              <span className="fas fa-user"></span>
             </div>
           </div>
           {errors.username && touched.username ? (
-            <small id="passwordHelp" class="text-danger">
+            <small id="passwordHelp" className="text-danger">
               {errors.username}
             </small>
           ) : null}
@@ -91,6 +95,7 @@ const Login = (props) => {
             value={values.password}
             className="form-control"
             placeholder="Password"
+            autoComplete="current-password"
             // eslint-disable-next-line react/jsx-no-duplicate-props
             className={
               errors.password && touched.password
@@ -98,21 +103,21 @@ const Login = (props) => {
                 : "form-control"
             }
           />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+          <div className="input-group-append">
+            <div className="input-group-text">
+              <span className="fas fa-lock"></span>
             </div>
           </div>
           {errors.password && touched.password ? (
-            <small id="passwordHelp" class="text-danger">
+            <small id="passwordHelp" className="text-danger">
               {errors.password}
             </small>
-          ) : null}
+          ) : null} 
         </div>
         <div className="form-group">
           <label>Recaptcha Validation</label>
           <Recaptcha
-            sitekey={process.env.REACT_APP_RECAPCHA_KEY}
+            sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
             render="explicit"
             theme="light"
             verifyCallback={(response) => {
@@ -124,18 +129,18 @@ const Login = (props) => {
           />
           {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
         </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
+        <div className="row">
+          <div className="col-8">
+            <div className="icheck-primary">
               <input type="checkbox" id="remember" />
-              <label for="remember">Remember Me</label>
+              <label htmlFor="remember">Remember Me</label>
             </div>
           </div>
-          <div class="col-4">
+          <div className="col-4">
             <button
               type="submit"
               disabled={isSubmitting}
-              class="btn btn-primary btn-block"
+              className="btn btn-primary btn-block"
             >
               Sign In
             </button>
@@ -146,7 +151,7 @@ const Login = (props) => {
   };
 
   return (
-    <div class="login-page">
+    <div className="login-page">
       <div className="register-box">
         <div className="register-logo">
           <a href="../../index2.html">
@@ -172,10 +177,10 @@ const Login = (props) => {
               {/* {this.showForm()}            */}
               {(props) => showForm(props)}
             </Formik>
-            <p class="mb-1">
+            <p className="mb-1">
               <Link to="/password/forgot">I forgot my password</Link>
             </p>
-            <p class="mb-0">
+            <p className="mb-0">
               <Link to="/register">Register a new membership</Link>
             </p>
           </div>
